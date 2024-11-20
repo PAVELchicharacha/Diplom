@@ -1,9 +1,13 @@
 package com.example.diplom
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +19,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -23,9 +34,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
@@ -33,6 +47,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import coil.compose.rememberImagePainter
 import com.example.diplom.ui.theme.DiplomTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -42,11 +57,13 @@ import com.google.firebase.auth.auth
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val auth = Firebase.auth
         setContent {
             MyApp(auth)
 //            MyImageScreen()
 //            Training()
+//            Profile()
 
         }
     }
@@ -81,10 +98,12 @@ fun MainScreen(auth: FirebaseAuth) {
                     "Home" -> {
                         Training()
                     }
+
                     "Chat" -> {
                         Chat()
                     }
-                    "Profile"-> {
+
+                    "Profile" -> {
                         Profile()
                     }
                 }
@@ -158,8 +177,9 @@ fun AuthScreen(onAuth: () -> Unit) {
         }
     }
 }
+
 @Composable
-fun Register(){
+fun Register() {
 
 }
 
@@ -197,9 +217,9 @@ fun SignUp(auth: FirebaseAuth, email: String, password: String) {
 }
 
 @Composable
-fun Training(){
+fun Training() {
     DiplomTheme(
-    ){
+    ) {
         Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -229,7 +249,7 @@ fun Training(){
                 "Tomato sos, cheese, oregano, green paprika, red beans",
                 "Tomato sos, cheese, oregano, corn, jalapeno, chicken",
 
-            )
+                )
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "MainScreen") {
                 composable(route = "MainScreen") {
@@ -241,7 +261,7 @@ fun Training(){
                             type = NavType.IntType
                         }
                     )
-                ) { index->
+                ) { index ->
                     DetailScreen(
                         photos = imageId,
                         names = names,
@@ -254,18 +274,86 @@ fun Training(){
     }
 }
 
-
-
-
-
-
-
-
 @Composable
-fun Chat(){
+fun Chat() {
     Text("qweqweqwe2")
 }
+
 @Composable
-fun Profile(){
-    Text("qweqweqwe3")
+fun Profile() {
+    val note = rememberSaveable() { mutableStateOf("") }
+    if (note.value.isNotEmpty()) {
+        Toast.makeText(LocalContext.current, note.value, Toast.LENGTH_SHORT).show()
+        note.value = ""
+    }
+
+    var name by rememberSaveable { mutableStateOf("your name") }
+    var username by rememberSaveable {  mutableStateOf("your name")}
+    var bio by rememberSaveable {  mutableStateOf("your name")}
+
+
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(), horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = "cancel", modifier = Modifier.clickable { note.value = "Cancelled" })
+            Text(text = "Save", modifier = Modifier.clickable { note.value = "Saved" })
+        }
+        Pfp()
+
+        Row(modifier = Modifier.fillMaxWidth().padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(text= "Name ", modifier = Modifier.width(100.dp))
+            TextField(value = name, onValueChange = {name = it})
+        }
+        Row(modifier = Modifier.fillMaxWidth().padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(text= "UserName ", modifier = Modifier.width(100.dp))
+            TextField(value = username, onValueChange = {username = it})
+        }
+    }
 }
+
+@Composable
+fun Pfp() {
+    val image = rememberSaveable() { mutableStateOf("") }
+    val painter = rememberImagePainter(
+        if (image.value.isEmpty()) {
+            R.drawable.person
+        } else {
+            image.value
+            //запихнуть все в бд
+
+        }
+
+    )
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let { image.value = it.toString() }
+        }
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card(shape = CircleShape, modifier = Modifier
+            .padding(8.dp)
+            .size(200.dp)) {
+            Image(
+                painter = painter,
+                contentDescription = null,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .clickable { launcher.launch("image/*")},
+                contentScale = ContentScale.Crop
+            )
+        }
+        Text(text = "Change profile picture")
+    }
+}
+
