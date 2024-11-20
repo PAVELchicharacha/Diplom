@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "18584408250",
+    "project_id": "diplom-36a19",
+    "storage_bucket": "diplom-36a19.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18584408250:android:0c4c22ace5b1b7a1c0f283",
+        "android_client_info": {
+          "package_name": "com.example.diplom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5qLcrZbbOP0KKTNaRMQn9LSppwvw5fhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
