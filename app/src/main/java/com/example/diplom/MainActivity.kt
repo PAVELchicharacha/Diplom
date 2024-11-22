@@ -9,6 +9,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,12 +25,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +42,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -149,6 +155,8 @@ fun AuthScreen(onAuth: () -> Unit) {
         mutableStateOf("")
     }
     Log.d("mylog", "user email:${auth.currentUser?.email}")
+
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -156,23 +164,41 @@ fun AuthScreen(onAuth: () -> Unit) {
     )
     //ввод почты и пароля
     {
-        TextField(value = email.value, onValueChange = {
-            email.value = it
-        })
+        TextField(value = email.value,onValueChange = { email.value = it },
+
+            modifier = Modifier.border(brush = Brush.horizontalGradient(colors = listOf(Color.Black, Color.Black)),
+                shape = RoundedCornerShape(100.dp), width = 1.dp),
+
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent
+            ),
+
+        )
         Spacer(modifier = Modifier.height(10.dp))
-        TextField(value = password.value, onValueChange = {
-            password.value = it
-        })
-        Button(onClick = {
-            SignIn(auth, email.value, password.value)
-            onAuth()
-        }) {
+        TextField(value = password.value, onValueChange = { password.value = it },
+
+            modifier = Modifier.border(brush = Brush.horizontalGradient(colors = listOf(Color.Black, Color.Black)), shape = RoundedCornerShape(100.dp), width = 1.dp),
+
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent
+            )
+        )
+        Button(onClick = { SignIn(auth, email.value, password.value)
+            onAuth() },
+            colors = ButtonColors(Color.Cyan,Color.Black,Color.Black,Color.Black), ) {
             Text(text = "Sign In")
         }
         Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = {
-            SignUp(auth, email.value, password.value)
-        }) {
+
+        Button(onClick = { SignUp(auth, email.value, password.value)},
+            colors = ButtonColors(Color.Cyan,Color.Black,Color.Black,Color.Black))
+        {
             Text(text = "Sign Up")
         }
     }
@@ -288,8 +314,8 @@ fun Profile() {
     }
 
     var name by rememberSaveable { mutableStateOf("your name") }
-    var username by rememberSaveable {  mutableStateOf("your name")}
-    var bio by rememberSaveable {  mutableStateOf("your name")}
+    var username by rememberSaveable { mutableStateOf("your name") }
+    var bio by rememberSaveable { mutableStateOf("your name") }
 
 
     Column(
@@ -307,13 +333,23 @@ fun Profile() {
         }
         Pfp()
 
-        Row(modifier = Modifier.fillMaxWidth().padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(text= "Name ", modifier = Modifier.width(100.dp))
-            TextField(value = name, onValueChange = {name = it})
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Name ", modifier = Modifier.width(100.dp))
+            TextField(value = name, onValueChange = { name = it })
         }
-        Row(modifier = Modifier.fillMaxWidth().padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(text= "UserName ", modifier = Modifier.width(100.dp))
-            TextField(value = username, onValueChange = {username = it})
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "UserName ", modifier = Modifier.width(100.dp))
+            TextField(value = username, onValueChange = { username = it })
         }
     }
 }
@@ -341,15 +377,17 @@ fun Pfp() {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Card(shape = CircleShape, modifier = Modifier
-            .padding(8.dp)
-            .size(200.dp)) {
+        Card(
+            shape = CircleShape, modifier = Modifier
+                .padding(8.dp)
+                .size(200.dp)
+        ) {
             Image(
                 painter = painter,
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentSize()
-                    .clickable { launcher.launch("image/*")},
+                    .clickable { launcher.launch("image/*") },
                 contentScale = ContentScale.Crop
             )
         }
