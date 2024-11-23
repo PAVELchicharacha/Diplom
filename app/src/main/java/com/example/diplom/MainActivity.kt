@@ -1,76 +1,57 @@
 package com.example.diplom
 
-import android.net.Uri
+// Основной импорт для Firestore
+
+// Импорт для работы с документами
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Card
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import coil.compose.rememberImagePainter
-import com.example.diplom.ui.theme.DiplomTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.postgrest.Postgrest
+
+
+val supabase = createSupabaseClient(
+    supabaseUrl = "https://pzbqhunebwbqivfqojom.supabase.co",
+    supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6YnFodW5lYndicWl2ZnFvam9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2NTI2MjcsImV4cCI6MjA0ODIyODYyN30.jzstnGKtXgNtGJuAYzT5BrKm1CI7qTlo-wSABzNEZlw"
+) {
+    install(Postgrest)
+}
+
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val auth = Firebase.auth
-        setContent {
+
+
+
+        setContent{
             MyApp(auth)
 //            MyImageScreen()
 //            Training()
 //            Profile()
-
         }
     }
 }
@@ -96,7 +77,6 @@ fun MainScreen(auth: FirebaseAuth) {
             Box(
                 modifier = Modifier
                     .weight(1f)
-
             )
             //при нажатии на надпись идет переход на нужный экран
             {
@@ -106,7 +86,7 @@ fun MainScreen(auth: FirebaseAuth) {
                     }
 
                     "Chat" -> {
-                        Chat()
+                        ChatScreen()
                     }
 
                     "Profile" -> {
@@ -140,75 +120,6 @@ fun MainScreen(auth: FirebaseAuth) {
         }
     }
 }
-
-
-@Composable
-fun AuthScreen(onAuth: () -> Unit) {
-
-
-    val auth = Firebase.auth
-
-    val email = remember {
-        mutableStateOf("")
-    }
-    val password = remember {
-        mutableStateOf("")
-    }
-    Log.d("mylog", "user email:${auth.currentUser?.email}")
-
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    )
-    //ввод почты и пароля
-    {
-        TextField(value = email.value,onValueChange = { email.value = it },
-
-            modifier = Modifier.border(brush = Brush.horizontalGradient(colors = listOf(Color.Black, Color.Black)),
-                shape = RoundedCornerShape(100.dp), width = 1.dp),
-
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent
-            ),
-
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        TextField(value = password.value, onValueChange = { password.value = it },
-
-            modifier = Modifier.border(brush = Brush.horizontalGradient(colors = listOf(Color.Black, Color.Black)), shape = RoundedCornerShape(100.dp), width = 1.dp),
-
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent
-            )
-        )
-        Button(onClick = { SignIn(auth, email.value, password.value)
-            onAuth() },
-            colors = ButtonColors(Color.Cyan,Color.Black,Color.Black,Color.Black), ) {
-            Text(text = "Sign In")
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Button(onClick = { SignUp(auth, email.value, password.value)},
-            colors = ButtonColors(Color.Cyan,Color.Black,Color.Black,Color.Black))
-        {
-            Text(text = "Sign Up")
-        }
-    }
-}
-
-@Composable
-fun Register() {
-
-}
-
 //выход из аккаунта
 fun SignOut(auth: FirebaseAuth) {
     auth.signOut()
@@ -241,157 +152,3 @@ fun SignUp(auth: FirebaseAuth, email: String, password: String) {
         }
     }
 }
-
-@Composable
-fun Training() {
-    DiplomTheme(
-    ) {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            val imageId = arrayOf(
-                R.drawable.arms,
-                R.drawable.leg,
-                R.drawable.press,
-                R.drawable.back,
-                R.drawable.chest,
-                R.drawable.neck,
-            )
-
-            val names = arrayOf(
-                "упражнения на руки",
-                "упражнения на ноги",
-                "упражнения на пресс",
-                "упражнения на спину",
-                "упражнения на грудь",
-                "упражнения на шею"
-            )
-
-            val ingredients = arrayOf(
-                "Tomato sos, cheese, oregano, peperoni",
-                "Tomato sos, cheese, oregano, spinach, green paprika, rukola",
-                "Tomato sos, oregano, mozzarella, goda, parmesan, cheddar",
-                "Tomato sos, cheese, oregano, bazillion",
-                "Tomato sos, cheese, oregano, green paprika, red beans",
-                "Tomato sos, cheese, oregano, corn, jalapeno, chicken",
-
-                )
-            val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "MainScreen") {
-                composable(route = "MainScreen") {
-                    TrainScreen(imageId, names, ingredients, navController)
-                }
-                composable(route = "DetailScreen/{index}",
-                    arguments = listOf(
-                        navArgument(name = "index") {
-                            type = NavType.IntType
-                        }
-                    )
-                ) { index ->
-                    DetailScreen(
-                        photos = imageId,
-                        names = names,
-                        ingredients = ingredients,
-                        itemIndex = index.arguments?.getInt("index")
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun Chat() {
-    Text("qweqweqwe2")
-}
-
-@Composable
-fun Profile() {
-    val note = rememberSaveable() { mutableStateOf("") }
-    if (note.value.isNotEmpty()) {
-        Toast.makeText(LocalContext.current, note.value, Toast.LENGTH_SHORT).show()
-        note.value = ""
-    }
-
-    var name by rememberSaveable { mutableStateOf("your name") }
-    var username by rememberSaveable { mutableStateOf("your name") }
-    var bio by rememberSaveable { mutableStateOf("your name") }
-
-
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(8.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(), horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "cancel", modifier = Modifier.clickable { note.value = "Cancelled" })
-            Text(text = "Save", modifier = Modifier.clickable { note.value = "Saved" })
-        }
-        Pfp()
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Name ", modifier = Modifier.width(100.dp))
-            TextField(value = name, onValueChange = { name = it })
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "UserName ", modifier = Modifier.width(100.dp))
-            TextField(value = username, onValueChange = { username = it })
-        }
-    }
-}
-
-@Composable
-fun Pfp() {
-    val image = rememberSaveable() { mutableStateOf("") }
-    val painter = rememberImagePainter(
-        if (image.value.isEmpty()) {
-            R.drawable.person
-        } else {
-            image.value
-            //запихнуть все в бд
-
-        }
-
-    )
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let { image.value = it.toString() }
-        }
-    Column(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Card(
-            shape = CircleShape, modifier = Modifier
-                .padding(8.dp)
-                .size(200.dp)
-        ) {
-            Image(
-                painter = painter,
-                contentDescription = null,
-                modifier = Modifier
-                    .wrapContentSize()
-                    .clickable { launcher.launch("image/*") },
-                contentScale = ContentScale.Crop
-            )
-        }
-        Text(text = "Change profile picture")
-    }
-}
-
