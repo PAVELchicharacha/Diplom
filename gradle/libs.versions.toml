@@ -18,6 +18,9 @@ navigationComposeVersion = "2.7.1"
 navigationRuntimeKtx = "2.8.4"
 navigationCompose = "2.8.4"
 firebaseStorage = "21.0.1"
+roomCommon = "2.6.1"
+roomKtx = "2.6.1"
+firebaseFirestoreKtx = "25.1.1"
 
 [libraries]
 androidx-compose-bom-v20230300 = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
@@ -46,6 +49,9 @@ ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
