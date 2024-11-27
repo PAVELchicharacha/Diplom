@@ -24,7 +24,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,7 +32,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-
 
 @Composable
 fun Profile() {
@@ -136,32 +134,6 @@ fun Pfp() {
 
     val image = rememberSaveable() { mutableStateOf("") }
 
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {
-            uri: Uri? -> uri?.let { image.value = it.toString() }
-//            uri-> if (uri == null) return@rememberLauncherForActivityResult
-//            val task= supabase.storage.child("Pfp.jpg").putBytes(
-//                bitmapToByteArray(context =, uri),
-//            )
-        }
-
-
-
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        imageUri?.let {
-            Image(painter = rememberImagePainter(it), contentDescription = null)
-        }
-
-    }
-
 
     val painter = rememberImagePainter(
         if (image.value.isEmpty()) {
@@ -177,6 +149,10 @@ fun Pfp() {
     ) {
 
     }
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let { image.value = it.toString() }
+        }
     Column(
         modifier = Modifier
             .padding(8.dp)

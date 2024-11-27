@@ -60,11 +60,6 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.firebase.storage)
-    implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.androidx.datastore.core.android)
-    implementation(libs.support.annotations)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
