@@ -69,12 +69,14 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
-    implementation(libs.bom)
-    implementation(libs.postgrest.kt)
-    implementation(libs.auth.kt)
-    implementation(libs.realtime.kt)
-    implementation(libs.ktor.client.android)
-    implementation(libs.supabase.kt)
+    implementation(platform("io.github.jan-tennert.supabase:bom:3.0.2"))
+    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+    implementation("io.github.jan-tennert.supabase:auth-kt")
+    implementation("io.github.jan-tennert.supabase:realtime-kt")
+
+
+    implementation("io.ktor:ktor-client-android:3.0.1")
+
 
 
 
