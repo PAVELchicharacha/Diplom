@@ -123,6 +123,7 @@ fun Profile() {
 fun Pfp() {
 
 
+
 //    fun bitmapToByteArray(context:Context,uri:Uri):ByteArray{
 //        val inputStream = context.contentResolver.openInputStream(uri)
 //        val bitmap=BitmapFactory.decodeStream(inputStream)
@@ -176,4 +177,7 @@ fun Pfp() {
         }
         Text(text = "Change profile picture")
     }
+
 }
+
+

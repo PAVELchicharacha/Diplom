@@ -18,56 +18,57 @@ import androidx.navigation.NavController
 
 
 @Composable
-    fun TrainScreen(
+fun TrainScreen(
     imageId: Array<Int>,
     names: Array<String>,
     ingredients: Array<String>,
     navController: NavController,
     modifier: Modifier = Modifier
-    ){
-        LazyColumn (){
-            val itemCount = imageId.size
-
-            items(itemCount){
-                ColumnItem(
-                    modifier= Modifier,
-                    painter = imageId,
-                    title = names,
-                    itemIndex = it,
-                    navController = navController,
-                )
-            }
+) {
+    LazyColumn() {
+        val itemCount = imageId.size
+        items(itemCount) {
+            ColumnItem(
+                modifier = Modifier,
+                painter = imageId,
+                title = names,
+                itemIndex = it,
+                navController = navController,
+            )
         }
     }
-    @Composable
-    fun ColumnItem(
-        modifier: Modifier,
-        painter: Array<Int>,
-        title: Array<String>,
-        itemIndex: Int,
-        navController: NavController
-    ){
-        Card(
-            modifier=Modifier
-                .padding(10.dp)
-                .fillMaxWidth()
-                .clickable {
-                    navController.navigate(route= "DetailScreen/$itemIndex")
-                },
-            colors = CardDefaults.cardColors(
+}
 
-            ),
-            elevation = CardDefaults.cardElevation(10.dp)
+@Composable
+fun ColumnItem(
+    modifier: Modifier,
+    painter: Array<Int>,
+    title: Array<String>,
+    itemIndex: Int,
+    navController: NavController
+) {
+    Card(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth()
+            .clickable {
+                navController.navigate(route = "DetailScreen/$itemIndex")
+            },
+        colors = CardDefaults.cardColors(
+
+        ),
+        elevation = CardDefaults.cardElevation(10.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.spacedBy(15.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = painter[itemIndex]),
-                    contentDescription = title[itemIndex],
-                )
+            Image(
+                painter = painterResource(id = painter[itemIndex]),
+                contentDescription = title[itemIndex],
+            )
 
-            }
-    }   }
+        }
+    }
+}

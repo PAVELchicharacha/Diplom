@@ -10,12 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -28,13 +31,13 @@ import com.google.firebase.auth.auth
 fun AuthScreen(onAuth: () -> Unit) {
     val auth = Firebase.auth
 
-    val email = remember {
-        mutableStateOf("")
-    }
-    val password = remember {
-        mutableStateOf("")
-    }
+    val email = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+
+    var isValid by remember { mutableStateOf(true) }
+
     Log.d("my log", "user email:${auth.currentUser?.email}")
+
 
 
     Column(
@@ -45,7 +48,8 @@ fun AuthScreen(onAuth: () -> Unit) {
     //ввод почты и пароля
     {
         TextField(
-            value = email.value, onValueChange = { email.value = it },
+            value = email.value, onValueChange = { email.value = it
+                isValid = it.isNotEmpty()},
 
             modifier = Modifier.border(
                 brush = Brush.horizontalGradient(colors = listOf(Color.Black, Color.Black)),
@@ -62,7 +66,8 @@ fun AuthScreen(onAuth: () -> Unit) {
             )
         Spacer(modifier = Modifier.height(10.dp))
         TextField(
-            value = password.value, onValueChange = { password.value = it },
+            value = password.value, onValueChange = { password.value = it
+                isValid = it.isNotEmpty()},
 
             modifier = Modifier.border(
                 brush = Brush.horizontalGradient(
@@ -80,10 +85,22 @@ fun AuthScreen(onAuth: () -> Unit) {
                 errorContainerColor = Color.Transparent
             )
         )
+        if (!isValid) {
+            Text(
+                text = "логин или пароль не может быть пустым",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
         Button(
             onClick = {
-                SignIn(auth, email.value, password.value)
-                onAuth()
+                if (email.value.isEmpty()||password.value.isEmpty()) {
+                    isValid = false
+                } else {
+                    isValid = true
+                    SignIn(auth, email.value, password.value)
+                    onAuth()
+                }
             },
             colors = ButtonColors(Color.Cyan, Color.Black, Color.Black, Color.Black),
         ) {
@@ -92,7 +109,14 @@ fun AuthScreen(onAuth: () -> Unit) {
         Spacer(modifier = Modifier.height(10.dp))
 
         Button(
-            onClick = { SignUp(auth, email.value, password.value) },
+            onClick = {
+                if (email.value.isEmpty()||password.value.isEmpty()) {
+                isValid = false
+            } else {
+                isValid = true
+                SignUp(auth, email.value, password.value)
+                onAuth()
+            } },
             colors = ButtonColors(Color.Cyan, Color.Black, Color.Black, Color.Black)
         )
         {
