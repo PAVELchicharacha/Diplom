@@ -41,9 +41,8 @@ fun Profile() {
         note.value = ""
     }
 
-    var name by rememberSaveable { mutableStateOf("your name") }
-    var username by rememberSaveable { mutableStateOf("your name") }
-    var bio by rememberSaveable { mutableStateOf("your name") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var username by rememberSaveable { mutableStateOf("") }
 
 
     Column(
@@ -59,6 +58,7 @@ fun Profile() {
             Text(text = "cancel", modifier = Modifier.clickable { note.value = "Cancelled" })
             Text(text = "Save", modifier = Modifier.clickable { note.value = "Saved" })
         }
+
         Pfp()
 
         Row(
@@ -67,8 +67,8 @@ fun Profile() {
                 .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Name ", modifier = Modifier.width(100.dp))
-            TextField(value = name, onValueChange = { name = it })
+            Text(text = "email", modifier = Modifier.width(100.dp))
+            TextField(value = email, onValueChange = { email = it })
         }
         Row(
             modifier = Modifier
@@ -82,59 +82,9 @@ fun Profile() {
     }
 }
 
-//fun imageToBase64(uri: Uri, contentResolver: ContentResolver): String {
-//    val inputStream = contentResolver.openInputStream(uri)
-//    val bytes = inputStream?.readBytes()
-//    return bytes?.let {
-//        Base64.encodeToString(it, Base64.DEFAULT)
-//    } ?: ""
-//}
-
-//val cv = LocalContext.current.contentResolver
-//
-//    data class Pfp(
-//        val key:String="",
-//        val name:String="",
-//        val description:String="",
-//        val price:String="",
-//        val category:String="",
-//        val IMGUrl:String="",
-//    )
-//    fun saveToFireStore(
-//
-//        firestore: FirebaseFirestore,
-//        url: String,
-//        pfp: Pfp
-//
-//        ) {
-//        val db = firestore.collection("UserPfp")
-//        val key = db.document().id
-//
-//        db.document(key).set(pfp.copy(key=key,IMGUrl=url))
-//            .addOnCompleteListener{
-//
-//            }
-//            .addOnFailureListener{
-//
-//            }
-//    }
-
 @Composable
 fun Pfp() {
-
-
-
-//    fun bitmapToByteArray(context:Context,uri:Uri):ByteArray{
-//        val inputStream = context.contentResolver.openInputStream(uri)
-//        val bitmap=BitmapFactory.decodeStream(inputStream)
-//        val baos = ByteArrayOutputStream()
-//        bitmap.compress(Bitmap.CompressFormat.JPEG,50,baos)
-//        return baos.toByteArray()
-//
-//    }
-
     val image = rememberSaveable() { mutableStateOf("") }
-
 
     val painter = rememberImagePainter(
         if (image.value.isEmpty()) {
@@ -171,12 +121,14 @@ fun Pfp() {
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentSize()
+                    .fillMaxSize()
                     .clickable { launcher.launch("image/*") },
                 contentScale = ContentScale.Crop,
             )
         }
         Text(text = "Change profile picture")
     }
+
 
 }
 

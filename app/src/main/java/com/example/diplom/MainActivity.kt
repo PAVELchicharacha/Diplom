@@ -1,8 +1,5 @@
 package com.example.diplom
 
-// Основной импорт для Firestore
-
-// Импорт для работы с документами
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -37,20 +34,12 @@ val supabase = createSupabaseClient(
 ) {
     install(Postgrest)
 }
-
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val auth = Firebase.auth
-
-
-
         setContent{
             MyApp(auth)
-//            MyImageScreen()
-//            Training()
-//            Profile()
         }
     }
 }
@@ -77,7 +66,7 @@ fun MainScreen(auth: FirebaseAuth) {
                 modifier = Modifier
                     .weight(1f)
             )
-            //при нажатии на надпись идет переход на нужный экран
+            //при нажатии на картинку идет переход на нужный экран
             {
                 when (route) {
                     "Home" -> {
@@ -123,7 +112,6 @@ fun MainScreen(auth: FirebaseAuth) {
 fun SignOut(auth: FirebaseAuth) {
     auth.signOut()
 }
-
 //удаление аккауна
 fun DeleteAccount(auth: FirebaseAuth) {
     auth.currentUser?.delete()!!

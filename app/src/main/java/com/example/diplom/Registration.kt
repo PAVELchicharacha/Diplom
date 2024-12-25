@@ -29,6 +29,7 @@ import com.google.firebase.auth.auth
 
 @Composable
 fun AuthScreen(onAuth: () -> Unit) {
+
     val auth = Firebase.auth
 
     val email = remember { mutableStateOf("") }

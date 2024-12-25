@@ -23,7 +23,7 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     photos: Array<Int>,
     names: Array<String>,
-    ingredients: Array<String>,
+    training: Array<String>,
     itemIndex: Int?
 ) {
     Column(
@@ -45,7 +45,7 @@ fun DetailScreen(
             )
         }
         Text(text = names[itemIndex!!], fontSize = 30.sp, fontWeight = FontWeight.Bold)
-        Text(text = ingredients[itemIndex], fontSize = 18.sp)
+        Text(text = training[itemIndex], fontSize = 18.sp)
     }
 
 }

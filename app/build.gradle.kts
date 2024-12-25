@@ -5,6 +5,9 @@ plugins {
     alias(libs.plugins.google.gms.google.services)
     kotlin("plugin.serialization") version "2.0.20"
 
+//    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -60,6 +63,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.firebase.storage)
+    implementation(libs.firebase.database)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -78,7 +82,8 @@ dependencies {
     implementation("io.ktor:ktor-client-android:3.0.1")
 
 
-
+    implementation ("com.google.dagger:hilt-android:2.54")
+    kapt ("com.google.dagger:hilt-compiler:2.54")
 
     //navigation
     implementation(libs.androidx.navigation.compose.v271)
