@@ -1,5 +1,6 @@
 package com.example.diplom
 
+import android.content.ContentResolver
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -22,8 +23,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,18 +34,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import coil.compose.rememberImagePainter
+import io.github.jan.supabase.storage.storage
+import io.github.jan.supabase.storage.upload
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+
 
 @Composable
-fun Profile() {
+fun Profile(contentResolver: ContentResolver) {
     val note = rememberSaveable() { mutableStateOf("") }
     if (note.value.isNotEmpty()) {
         Toast.makeText(LocalContext.current, note.value, Toast.LENGTH_SHORT).show()
         note.value = ""
     }
 
-    var email by rememberSaveable { mutableStateOf("") }
-    var username by rememberSaveable { mutableStateOf("") }
+    var name by rememberSaveable { mutableStateOf("your name") }
+    var username by rememberSaveable { mutableStateOf("your name") }
+    var bio by rememberSaveable { mutableStateOf("your name") }
 
 
     Column(
@@ -58,8 +70,7 @@ fun Profile() {
             Text(text = "cancel", modifier = Modifier.clickable { note.value = "Cancelled" })
             Text(text = "Save", modifier = Modifier.clickable { note.value = "Saved" })
         }
-
-        Pfp()
+        Pfp(contentResolver)
 
         Row(
             modifier = Modifier
@@ -67,8 +78,8 @@ fun Profile() {
                 .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "email", modifier = Modifier.width(100.dp))
-            TextField(value = email, onValueChange = { email = it })
+            Text(text = "Name ", modifier = Modifier.width(100.dp))
+            TextField(value = name, onValueChange = { name = it })
         }
         Row(
             modifier = Modifier
@@ -83,8 +94,13 @@ fun Profile() {
 }
 
 @Composable
-fun Pfp() {
+fun Pfp(contentResolver: ContentResolver) {
+
+    val context = LocalContext.current
+    val lifecycleOwner = rememberUpdatedState(context as LifecycleOwner)
+
     val image = rememberSaveable() { mutableStateOf("") }
+
 
     val painter = rememberImagePainter(
         if (image.value.isEmpty()) {
@@ -103,6 +119,11 @@ fun Pfp() {
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let { image.value = it.toString() }
+            if(uri!=null){
+                lifecycleOwner.value.lifecycleScope.launch {
+                    uploadFile(uri, lifecycleOwner, contentResolver)
+                }
+            }
         }
     Column(
         modifier = Modifier
@@ -121,7 +142,6 @@ fun Pfp() {
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentSize()
-                    .fillMaxSize()
                     .clickable { launcher.launch("image/*") },
                 contentScale = ContentScale.Crop,
             )
@@ -130,6 +150,37 @@ fun Pfp() {
     }
 
 
+}
+private suspend fun uploadFile(uri: Uri, lifecycleOwner:State<LifecycleOwner>, contentResolver: ContentResolver) {
+    val inputStream = contentResolver.openInputStream(uri)
+    val bytes = inputStream?.readBytes()
+    val bucket = supabase.storage.from("pavel")
+    uri.path?.let {
+        if (bytes != null) {
+            bucket.upload(it,bytes)
+        }
+    }
+}
+private fun uriToByteArray(contentResolver: ContentResolver, uri: Uri): ByteArray {
+    if (uri == Uri.EMPTY) {
+        return byteArrayOf()
+    }
+    val inputStream = contentResolver.openInputStream(uri)
+    if (inputStream != null) {
+        return getBytes(inputStream)
+    }
+    return byteArrayOf()
+}
+
+private fun getBytes(inputStream: InputStream): ByteArray {
+    val byteBuffer = ByteArrayOutputStream()
+    val bufferSize = 1024
+    val buffer = ByteArray(bufferSize)
+    var len = 0
+    while (inputStream.read(buffer).also { len = it } != -1) {
+        byteBuffer.write(buffer, 0, len)
+    }
+    return byteBuffer.toByteArray()
 }
 
 

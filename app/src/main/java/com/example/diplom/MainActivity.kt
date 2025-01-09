@@ -1,5 +1,6 @@
 package com.example.diplom
 
+import android.content.ContentResolver
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -38,24 +39,25 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val auth = Firebase.auth
+        val contentResolver = contentResolver
         setContent{
-            MyApp(auth)
+            MyApp(auth,contentResolver)
         }
     }
 }
 
 @Composable
-fun MyApp(auth: FirebaseAuth) {
+fun MyApp(auth: FirebaseAuth,contentResolver: ContentResolver) {
     var isRegistered by remember { mutableStateOf(false) }
     if (isRegistered) {
-        MainScreen(auth)
+        MainScreen(auth,contentResolver)
     } else {
         AuthScreen(onAuth = { isRegistered = true })
     }
 }
 
 @Composable
-fun MainScreen(auth: FirebaseAuth) {
+fun MainScreen(auth: FirebaseAuth,contentResolver: ContentResolver) {
     Column(
         modifier = Modifier,
         verticalArrangement = Arrangement.Center
@@ -78,7 +80,7 @@ fun MainScreen(auth: FirebaseAuth) {
                     }
 
                     "Profile" -> {
-                        Profile()
+                        Profile(contentResolver)
                     }
                 }
             }
