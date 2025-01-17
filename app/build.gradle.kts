@@ -6,8 +6,8 @@ plugins {
     kotlin("plugin.serialization") version "2.0.20"
 
 //    id("com.google.dagger.hilt.android")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+//    id("kotlin-kapt")
+//    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -73,17 +73,25 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
-    implementation(platform("io.github.jan-tennert.supabase:bom:3.0.2"))
-    implementation("io.github.jan-tennert.supabase:postgrest-kt")
-    implementation("io.github.jan-tennert.supabase:auth-kt")
-    implementation("io.github.jan-tennert.supabase:realtime-kt")
+//    пока что не работает из за санкций,буду юзать яндекс
+//    implementation("com.google.android.gms:play-services-maps:19.0.0")
+//    implementation("com.google.maps.android:maps-compose:4.4.1")
+
+    implementation("com.yandex.android:maps.mobile:4.1.0-full")
 
 
-    implementation("io.ktor:ktor-client-android:3.0.1")
 
-
-    implementation ("com.google.dagger:hilt-android:2.54")
-    kapt ("com.google.dagger:hilt-compiler:2.54")
+//    implementation(platform("io.github.jan-tennert.supabase:bom:3.0.2"))
+//    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+//    implementation("io.github.jan-tennert.supabase:auth-kt")
+//    implementation("io.github.jan-tennert.supabase:realtime-kt")
+//
+//
+//    implementation("io.ktor:ktor-client-android:3.0.1")
+//
+//
+//    implementation ("com.google.dagger:hilt-android:2.54")
+//    kapt ("com.google.dagger:hilt-compiler:2.54")
 
     //navigation
     implementation(libs.androidx.navigation.compose.v271)

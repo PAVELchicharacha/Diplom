@@ -25,22 +25,35 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.mapview.MapView
+
+//import io.github.jan.supabase.createSupabaseClient
+//import io.github.jan.supabase.postgrest.Postgrest
 
 
-val supabase = createSupabaseClient(
-    supabaseUrl = "https://pzbqhunebwbqivfqojom.supabase.co",
-    supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6YnFodW5lYndicWl2ZnFvam9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2NTI2MjcsImV4cCI6MjA0ODIyODYyN30.jzstnGKtXgNtGJuAYzT5BrKm1CI7qTlo-wSABzNEZlw"
-) {
-    install(Postgrest)
-}
+//val supabase = createSupabaseClient(
+//    supabaseUrl = "https://pzbqhunebwbqivfqojom.supabase.co",
+//    supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6YnFodW5lYndicWl2ZnFvam9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2NTI2MjcsImV4cCI6MjA0ODIyODYyN30.jzstnGKtXgNtGJuAYzT5BrKm1CI7qTlo-wSABzNEZlw"
+//) {
+//    install(Postgrest)
+//}
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val auth = Firebase.auth
+
+        lateinit var mapView: MapView
+        MapKitFactory.setApiKey("ece82d35-4eca-4566-ba3f-4f942bf62d85")
+        MapKitFactory.initialize(this)
+        mapView = MapView(this)
+
+
         val contentResolver = contentResolver
         setContent{
+
+            Map(mapView)
             MyApp(auth,contentResolver)
         }
     }

@@ -24,9 +24,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.yandex.mapkit.mapview.MapView
 
+@Composable
+fun Map(mapView: MapView){
+
+    AndroidView(
+        factory = { mapView },
+        modifier = Modifier.fillMaxSize()
+    )
+
+     fun onStart() {
+        onStart()
+        mapView.onStart()
+    }
+
+     fun onStop() {
+        onStop()
+        mapView.onStop()
+    }
+
+    // Не забудьте освободить ресурсы
+     fun onDestroy() {
+        mapView.onStop()
+        
+        onDestroy()
+    }
+}
 @Composable
 fun AuthScreen(onAuth: () -> Unit) {
 
@@ -39,7 +66,11 @@ fun AuthScreen(onAuth: () -> Unit) {
 
     Log.d("my log", "user email:${auth.currentUser?.email}")
 
+    lateinit var mapView: MapView
 
+
+
+    Map(mapView)
 
     Column(
         modifier = Modifier.fillMaxSize(),
