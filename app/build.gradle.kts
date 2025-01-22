@@ -73,9 +73,11 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
+
 //    пока что не работает из за санкций,буду юзать яндекс
 //    implementation("com.google.android.gms:play-services-maps:19.0.0")
 //    implementation("com.google.maps.android:maps-compose:4.4.1")
+
 
     implementation("com.yandex.android:maps.mobile:4.1.0-full")
 

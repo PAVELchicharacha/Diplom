@@ -1,11 +1,13 @@
 package com.example.diplom
 
 import android.util.Log
+import androidx.compose.animation.core.Animation
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -29,33 +31,17 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.yandex.mapkit.mapview.MapView
 
-@Composable
-fun Map(mapView: MapView){
 
+@Composable
+fun Map(mapView: MapView) {
     AndroidView(
         factory = { mapView },
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.height(200.dp).fillMaxWidth(),
+
     )
-
-     fun onStart() {
-        onStart()
-        mapView.onStart()
-    }
-
-     fun onStop() {
-        onStop()
-        mapView.onStop()
-    }
-
-    // Не забудьте освободить ресурсы
-     fun onDestroy() {
-        mapView.onStop()
-        
-        onDestroy()
-    }
 }
 @Composable
-fun AuthScreen(onAuth: () -> Unit) {
+fun AuthScreen(onAuth: () -> Unit,mapView: MapView) {
 
     val auth = Firebase.auth
 
@@ -66,11 +52,9 @@ fun AuthScreen(onAuth: () -> Unit) {
 
     Log.d("my log", "user email:${auth.currentUser?.email}")
 
-    lateinit var mapView: MapView
 
+    Map(mapView = mapView)
 
-
-    Map(mapView)
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -79,9 +63,13 @@ fun AuthScreen(onAuth: () -> Unit) {
     )
     //ввод почты и пароля
     {
+
         TextField(
-            value = email.value, onValueChange = { email.value = it
-                isValid = it.isNotEmpty()},
+            value = email.value,
+            onValueChange = {
+                email.value = it
+                isValid = it.isNotEmpty()
+            },
 
             modifier = Modifier.border(
                 brush = Brush.horizontalGradient(colors = listOf(Color.Black, Color.Black)),
@@ -98,8 +86,10 @@ fun AuthScreen(onAuth: () -> Unit) {
             )
         Spacer(modifier = Modifier.height(10.dp))
         TextField(
-            value = password.value, onValueChange = { password.value = it
-                isValid = it.isNotEmpty()},
+            value = password.value, onValueChange = {
+                password.value = it
+                isValid = it.isNotEmpty()
+            },
 
             modifier = Modifier.border(
                 brush = Brush.horizontalGradient(
@@ -126,7 +116,7 @@ fun AuthScreen(onAuth: () -> Unit) {
         }
         Button(
             onClick = {
-                if (email.value.isEmpty()||password.value.isEmpty()) {
+                if (email.value.isEmpty() || password.value.isEmpty()) {
                     isValid = false
                 } else {
                     isValid = true
@@ -142,13 +132,14 @@ fun AuthScreen(onAuth: () -> Unit) {
 
         Button(
             onClick = {
-                if (email.value.isEmpty()||password.value.isEmpty()) {
-                isValid = false
-            } else {
-                isValid = true
-                SignUp(auth, email.value, password.value)
-                onAuth()
-            } },
+                if (email.value.isEmpty() || password.value.isEmpty()) {
+                    isValid = false
+                } else {
+                    isValid = true
+                    SignUp(auth, email.value, password.value)
+                    onAuth()
+                }
+            },
             colors = ButtonColors(Color.Cyan, Color.Black, Color.Black, Color.Black)
         )
         {
