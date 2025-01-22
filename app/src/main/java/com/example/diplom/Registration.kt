@@ -36,8 +36,7 @@ import com.yandex.mapkit.mapview.MapView
 fun Map(mapView: MapView) {
     AndroidView(
         factory = { mapView },
-        modifier = Modifier.height(200.dp).fillMaxWidth(),
-
+        modifier = Modifier.height(180.dp).fillMaxWidth(),
     )
 }
 @Composable

@@ -3,16 +3,25 @@ package com.example.diplom
 //import io.github.jan.supabase.storage.storage
 //import io.github.jan.supabase.storage.upload
 import android.content.ContentResolver
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,8 +31,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 
 
 @Composable
@@ -52,7 +63,7 @@ fun Profile() {
             Text(text = "cancel", modifier = Modifier.clickable { note.value = "Cancelled" })
             Text(text = "Save", modifier = Modifier.clickable { note.value = "Saved" })
         }
-//        Pfp(contentResolver)
+        Pfp()
 
         Row(
             modifier = Modifier
@@ -75,6 +86,52 @@ fun Profile() {
     }
 }
 
+@Composable
+fun Pfp() {
+    val image = rememberSaveable() { mutableStateOf("") }
+    val painter = rememberImagePainter(
+        if (image.value.isEmpty()) {
+            R.drawable.person
+        } else {
+            image.value
+            //запихнуть все в бд
+        }
+    )
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+    }
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let { image.value = it.toString() }
+        }
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card(
+            shape = CircleShape, modifier = Modifier
+                .padding(8.dp)
+                .size(200.dp)
+        ) {
+            Image(
+                painter = painter,
+                contentDescription = null,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .fillMaxSize()
+                    .clickable { launcher.launch("image/*") },
+                contentScale = ContentScale.Crop,
+            )
+        }
+        Text(text = "Change profile picture")
+
+    }
+}
 //@Composable
 //fun Pfp(contentResolver: ContentResolver) {
 //
