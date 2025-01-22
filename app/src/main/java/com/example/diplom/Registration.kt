@@ -42,6 +42,7 @@ fun Map(mapView: MapView) {
 }
 @Composable
 fun AuthScreen(onAuth: () -> Unit,mapView: MapView) {
+
     val auth = Firebase.auth
 
     val email = remember { mutableStateOf("") }
@@ -51,7 +52,9 @@ fun AuthScreen(onAuth: () -> Unit,mapView: MapView) {
 
     Log.d("my log", "user email:${auth.currentUser?.email}")
 
+
     Map(mapView = mapView)
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
