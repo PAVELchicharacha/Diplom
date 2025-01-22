@@ -24,30 +24,37 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.mapview.MapView
+
+//import io.github.jan.supabase.createSupabaseClient
+//import io.github.jan.supabase.postgrest.Postgrest
 
 
-val supabase = createSupabaseClient(
-    supabaseUrl = "https://pzbqhunebwbqivfqojom.supabase.co",
-    supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6YnFodW5lYndicWl2ZnFvam9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2NTI2MjcsImV4cCI6MjA0ODIyODYyN30.jzstnGKtXgNtGJuAYzT5BrKm1CI7qTlo-wSABzNEZlw"
-) {
-    install(Postgrest)
-}
+//val supabase = createSupabaseClient(
+//    supabaseUrl = "https://pzbqhunebwbqivfqojom.supabase.co",
+//    supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6YnFodW5lYndicWl2ZnFvam9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2NTI2MjcsImV4cCI6MjA0ODIyODYyN30.jzstnGKtXgNtGJuAYzT5BrKm1CI7qTlo-wSABzNEZlw"
+//) {
+//    install(Postgrest)
+//}
 
 
 class MainActivity : ComponentActivity() {
+    lateinit var mapView: MapView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val auth = Firebase.auth
 
-
+        MapKitFactory.setApiKey("ece82d35-4eca-4566-ba3f-4f942bf62d85")
+        MapKitFactory.initialize(this)
+        mapView = MapView(this)
 
         setContent{
-            MyApp(auth)
+            MyApp(auth, mapView)
 //            MyImageScreen()
 //            Training()
 //            Profile()
@@ -55,13 +62,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
-fun MyApp(auth: FirebaseAuth) {
+fun MyApp(auth: FirebaseAuth,mapView: MapView) {
     var isRegistered by remember { mutableStateOf(false) }
     if (isRegistered) {
         MainScreen(auth)
     } else {
-        AuthScreen(onAuth = { isRegistered = true })
+        AuthScreen(onAuth = { isRegistered = true },mapView)
     }
 }
 
