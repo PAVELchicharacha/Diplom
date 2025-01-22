@@ -1,6 +1,8 @@
 package com.example.diplom
 
-import android.content.ContentResolver
+// Основной импорт для Firestore
+
+// Импорт для работы с документами
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -29,7 +31,6 @@ import com.google.firebase.auth.auth
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.mapview.MapView
 
-
 //import io.github.jan.supabase.createSupabaseClient
 //import io.github.jan.supabase.postgrest.Postgrest
 
@@ -42,32 +43,21 @@ import com.yandex.mapkit.mapview.MapView
 //}
 
 
-
-//val supabase = createSupabaseClient(
-//    supabaseUrl = "https://pzbqhunebwbqivfqojom.supabase.co",
-//    supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6YnFodW5lYndicWl2ZnFvam9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2NTI2MjcsImV4cCI6MjA0ODIyODYyN30.jzstnGKtXgNtGJuAYzT5BrKm1CI7qTlo-wSABzNEZlw"
-//) {
-//    install(Postgrest)
-//}
 class MainActivity : ComponentActivity() {
     lateinit var mapView: MapView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val auth = Firebase.auth
-
 
         MapKitFactory.setApiKey("ece82d35-4eca-4566-ba3f-4f942bf62d85")
         MapKitFactory.initialize(this)
+        mapView = MapView(this)
 
-
-        val contentResolver = contentResolver
         setContent{
             MyApp(auth, mapView)
 //            MyImageScreen()
 //            Training()
 //            Profile()
-
         }
     }
 }
@@ -75,17 +65,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp(auth: FirebaseAuth,mapView: MapView) {
-
     var isRegistered by remember { mutableStateOf(false) }
     if (isRegistered) {
-        MainScreen(auth,contentResolver)
+        MainScreen(auth)
     } else {
         AuthScreen(onAuth = { isRegistered = true },mapView)
     }
 }
 
 @Composable
-fun MainScreen(auth: FirebaseAuth,contentResolver: ContentResolver) {
+fun MainScreen(auth: FirebaseAuth) {
     Column(
         modifier = Modifier,
         verticalArrangement = Arrangement.Center
@@ -96,7 +85,7 @@ fun MainScreen(auth: FirebaseAuth,contentResolver: ContentResolver) {
                 modifier = Modifier
                     .weight(1f)
             )
-            //при нажатии на картинку идет переход на нужный экран
+            //при нажатии на надпись идет переход на нужный экран
             {
                 when (route) {
                     "Home" -> {
@@ -108,7 +97,7 @@ fun MainScreen(auth: FirebaseAuth,contentResolver: ContentResolver) {
                     }
 
                     "Profile" -> {
-                        Profile(contentResolver)
+                        Profile()
                     }
                 }
             }
@@ -142,6 +131,7 @@ fun MainScreen(auth: FirebaseAuth,contentResolver: ContentResolver) {
 fun SignOut(auth: FirebaseAuth) {
     auth.signOut()
 }
+
 //удаление аккауна
 fun DeleteAccount(auth: FirebaseAuth) {
     auth.currentUser?.delete()!!
