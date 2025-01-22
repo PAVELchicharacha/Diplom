@@ -42,6 +42,7 @@ fun Map(mapView: MapView) {
 }
 @Composable
 fun AuthScreen(onAuth: () -> Unit,mapView: MapView) {
+
     val auth = Firebase.auth
 
     val email = remember { mutableStateOf("") }

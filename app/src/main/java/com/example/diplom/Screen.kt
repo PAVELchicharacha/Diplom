@@ -21,7 +21,7 @@ import androidx.navigation.NavController
 fun TrainScreen(
     imageId: Array<Int>,
     names: Array<String>,
-    ingredients: Array<String>,
+    training: Array<String>,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {

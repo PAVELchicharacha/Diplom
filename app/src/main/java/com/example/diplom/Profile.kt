@@ -1,24 +1,18 @@
 package com.example.diplom
 
-import android.net.Uri
+//import io.github.jan.supabase.storage.storage
+//import io.github.jan.supabase.storage.upload
+import android.content.ContentResolver
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -28,13 +22,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+
 
 @Composable
-fun Profile() {
+fun Profile(contentResolver: ContentResolver) {
     val note = rememberSaveable() { mutableStateOf("") }
     if (note.value.isNotEmpty()) {
         Toast.makeText(LocalContext.current, note.value, Toast.LENGTH_SHORT).show()
@@ -59,7 +52,7 @@ fun Profile() {
             Text(text = "cancel", modifier = Modifier.clickable { note.value = "Cancelled" })
             Text(text = "Save", modifier = Modifier.clickable { note.value = "Saved" })
         }
-        Pfp()
+//        Pfp(contentResolver)
 
         Row(
             modifier = Modifier
@@ -82,102 +75,94 @@ fun Profile() {
     }
 }
 
-//fun imageToBase64(uri: Uri, contentResolver: ContentResolver): String {
+//@Composable
+//fun Pfp(contentResolver: ContentResolver) {
+//
+//    val context = LocalContext.current
+//    val lifecycleOwner = rememberUpdatedState(context as LifecycleOwner)
+//
+//    val image = rememberSaveable() { mutableStateOf("") }
+//
+//
+//    val painter = rememberImagePainter(
+//        if (image.value.isEmpty()) {
+//            R.drawable.person
+//        } else {
+//            image.value
+//        }
+//    )
+//    Column(
+//        modifier = Modifier.fillMaxSize(),
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center
+//    ) {
+//
+//    }
+//    val launcher =
+//        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
+//            uri?.let { image.value = it.toString() }
+//            if(uri!=null){
+//                lifecycleOwner.value.lifecycleScope.launch {
+//                    uploadFile(uri, lifecycleOwner, contentResolver)
+//                }
+//            }
+//        }
+//    Column(
+//        modifier = Modifier
+//            .padding(8.dp)
+//            .fillMaxWidth(),
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//
+//        Card(
+//            shape = CircleShape, modifier = Modifier
+//                .padding(8.dp)
+//                .size(200.dp)
+//        ) {
+//            Image(
+//                painter = painter,
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .wrapContentSize()
+//                    .clickable { launcher.launch("image/*") },
+//                contentScale = ContentScale.Crop,
+//            )
+//        }
+//        Text(text = "Change profile picture")
+//    }
+//
+//
+//}
+//private suspend fun uploadFile(uri: Uri, lifecycleOwner:State<LifecycleOwner>, contentResolver: ContentResolver) {
 //    val inputStream = contentResolver.openInputStream(uri)
 //    val bytes = inputStream?.readBytes()
-//    return bytes?.let {
-//        Base64.encodeToString(it, Base64.DEFAULT)
-//    } ?: ""
+//    val bucket = supabase.storage.from("pavel")
+//    uri.path?.let {
+//        if (bytes != null) {
+//            bucket.upload(it,bytes)
+//        }
+//    }
 //}
-
-//val cv = LocalContext.current.contentResolver
-//
-//    data class Pfp(
-//        val key:String="",
-//        val name:String="",
-//        val description:String="",
-//        val price:String="",
-//        val category:String="",
-//        val IMGUrl:String="",
-//    )
-//    fun saveToFireStore(
-//
-//        firestore: FirebaseFirestore,
-//        url: String,
-//        pfp: Pfp
-//
-//        ) {
-//        val db = firestore.collection("UserPfp")
-//        val key = db.document().id
-//
-//        db.document(key).set(pfp.copy(key=key,IMGUrl=url))
-//            .addOnCompleteListener{
-//
-//            }
-//            .addOnFailureListener{
-//
-//            }
+//private fun uriToByteArray(contentResolver: ContentResolver, uri: Uri): ByteArray {
+//    if (uri == Uri.EMPTY) {
+//        return byteArrayOf()
 //    }
-
-@Composable
-fun Pfp() {
-
-
-
-//    fun bitmapToByteArray(context:Context,uri:Uri):ByteArray{
-//        val inputStream = context.contentResolver.openInputStream(uri)
-//        val bitmap=BitmapFactory.decodeStream(inputStream)
-//        val baos = ByteArrayOutputStream()
-//        bitmap.compress(Bitmap.CompressFormat.JPEG,50,baos)
-//        return baos.toByteArray()
-//
+//    val inputStream = contentResolver.openInputStream(uri)
+//    if (inputStream != null) {
+//        return getBytes(inputStream)
 //    }
-
-    val image = rememberSaveable() { mutableStateOf("") }
-
-
-    val painter = rememberImagePainter(
-        if (image.value.isEmpty()) {
-            R.drawable.person
-        } else {
-            image.value
-        }
-    )
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-
-    }
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let { image.value = it.toString() }
-        }
-    Column(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Card(
-            shape = CircleShape, modifier = Modifier
-                .padding(8.dp)
-                .size(200.dp)
-        ) {
-            Image(
-                painter = painter,
-                contentDescription = null,
-                modifier = Modifier
-                    .wrapContentSize()
-                    .clickable { launcher.launch("image/*") },
-                contentScale = ContentScale.Crop,
-            )
-        }
-        Text(text = "Change profile picture")
-    }
-
-}
+//    return byteArrayOf()
+//}
+//
+//private fun getBytes(inputStream: InputStream): ByteArray {
+//    val byteBuffer = ByteArrayOutputStream()
+//    val bufferSize = 1024
+//    val buffer = ByteArray(bufferSize)
+//    var len = 0
+//    while (inputStream.read(buffer).also { len = it } != -1) {
+//        byteBuffer.write(buffer, 0, len)
+//    }
+//    return byteBuffer.toByteArray()
+//}
 
 
