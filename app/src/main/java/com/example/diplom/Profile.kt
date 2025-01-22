@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun Profile(contentResolver: ContentResolver) {
+fun Profile() {
     val note = rememberSaveable() { mutableStateOf("") }
     if (note.value.isNotEmpty()) {
         Toast.makeText(LocalContext.current, note.value, Toast.LENGTH_SHORT).show()
