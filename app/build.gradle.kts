@@ -65,6 +65,17 @@ dependencies {
     implementation(libs.firebase.storage)
     implementation(libs.firebase.database)
 
+    // Основная библиотека Ktor Client
+    implementation("io.ktor:ktor-client-core:2.3.5") // Основная библиотека Ktor
+    implementation("io.ktor:ktor-client-cio:2.3.5")
+
+    // Поддержка JSON (например, Gson)
+    implementation(libs.ktor.client.json)
+    implementation(libs.ktor.client.gson) // Используем Gson для сериализации
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("io.ktor:ktor-serialization-gson:2.3.5") // Добавьте эту строку
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
