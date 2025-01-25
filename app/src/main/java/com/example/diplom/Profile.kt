@@ -53,10 +53,21 @@ import io.ktor.util.InternalAPI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
-
+suspend fun getLinkFromResponse(response: HttpResponse): String? {
+    val jsonResponse = response.bodyAsText()
+    return try {
+        val jsonObject = JSONObject(jsonResponse)
+        val dataObject = jsonObject.getJSONObject("data")
+        dataObject.getString("link")
+    } catch (e: Exception) {
+        Log.e("my log", "Error parsing response: ${e.message}")
+        null
+    }
+}
 fun uriToBase64(context: Context, uri: Uri): String? {
     return try {
         // 1. Получаем InputStream из URI
@@ -99,14 +110,15 @@ val client = HttpClient(CIO) {
         gson()
     }
 }
+
 @OptIn(InternalAPI::class)
-suspend fun Response(uri: String, mimeType: String, fileName: String) {
+suspend fun Response(uri: ByteArray, mimeType: String, fileName: String) {
     val response: HttpResponse =
         client.post("https://api.imgur.com/3/image") {
             headers {
                 append("Authorization", "Client-ID 3fff6a5e315775d")
             }
-           body = MultiPartFormDataContent(
+            body = MultiPartFormDataContent(
                 formData {
                     append(
                         "image",
@@ -119,7 +131,8 @@ suspend fun Response(uri: String, mimeType: String, fileName: String) {
                 }
             )
         }
-    Log.d("my log", "response:${response.bodyAsText()}")
+
+    Log.d("my log", "response:${getLinkFromResponse(response)}")
 }
 
 @Composable
@@ -201,8 +214,11 @@ fun Pfp() {
                 mimeType.value = context.contentResolver.getType(it)
                 fileName.value = getFileName(context, it)
 
+                val inputStream = context.contentResolver.openInputStream(uri)
+                val fileBytes = inputStream?.use { it.readBytes() }
+
                 var ignat = ImageObject(
-                    uri = base64Image.value,
+                    uri = fileBytes!!,
                     mimeType = mimeType.value,
                     fileName = fileName.value
                 )
@@ -217,6 +233,7 @@ fun Pfp() {
                         Log.d("myLog", "fileName.value:${ignat.fileName}")
 
                         Log.d("myLog", "uri:${uri}")
+
 
                     }
                 }

@@ -1,7 +1,7 @@
 package com.example.diplom
 
 data class ImageObject(
-    val uri: String?,
+    val uri: ByteArray,
     val mimeType: String?,
     val fileName: String?
 )
