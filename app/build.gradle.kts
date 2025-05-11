@@ -8,6 +8,7 @@ plugins {
 //    id("com.google.dagger.hilt.android")
 //    id("kotlin-kapt")
 //    id("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -65,6 +66,13 @@ dependencies {
     implementation(libs.firebase.storage)
     implementation(libs.firebase.database)
 
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2") // Для viewModelScope
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2") // Для lifecycle
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3") // Для корутин
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+
     // Основная библиотека Ktor Client
     implementation("io.ktor:ktor-client-core:2.3.5") // Основная библиотека Ktor
     implementation("io.ktor:ktor-client-cio:2.3.5")
@@ -84,6 +92,12 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
+
+    implementation("androidx.activity:activity-compose:1.7.2") // Compose Activity
+    implementation("androidx.compose.ui:ui:1.5.1") // Compose UI
+    implementation("androidx.compose.material3:material3:1.1.1") // Material 3
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.1") // LiveData для Compose
+    implementation("io.coil-kt:coil-compose:2.4.0") // Загрузка изображений
 
 //    пока что не работает из за санкций,буду юзать яндекс
 //    implementation("com.google.android.gms:play-services-maps:19.0.0")

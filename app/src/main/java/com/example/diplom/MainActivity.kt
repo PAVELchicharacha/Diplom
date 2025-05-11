@@ -25,9 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.database
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.mapview.MapView
 
@@ -52,8 +54,9 @@ class MainActivity : ComponentActivity() {
         MapKitFactory.setApiKey("ece82d35-4eca-4566-ba3f-4f942bf62d85")
         MapKitFactory.initialize(this)
         mapView = MapView(this)
-
+        Firebase.database.setPersistenceEnabled(true)
         setContent{
+//            TrainingScreen()
             MyApp(auth, mapView)
 //            MyImageScreen()
 //            Training()
@@ -61,7 +64,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 @Composable
 fun MyApp(auth: FirebaseAuth,mapView: MapView) {
@@ -89,7 +91,7 @@ fun MainScreen(auth: FirebaseAuth) {
             {
                 when (route) {
                     "Home" -> {
-                        Training()
+                        TrainingScreen()
                     }
 
                     "Chat" -> {
