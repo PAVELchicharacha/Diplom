@@ -1,4 +1,4 @@
-package com.example.diplom
+package com.example.diplom.DATA
 import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
@@ -14,7 +14,7 @@ data class Data(
     val caloriesBurned: Int = 0,
     val durationMinutes: Int = 0,
     val createdAt: Long = 0
-) {
-    // Пустой конструктор необходим для Firebase
+)
+{
     constructor() : this("", "", "", "", "", "", "", "", 0, 0, 0)
 }

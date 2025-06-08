@@ -1,4 +1,4 @@
-package com.example.diplom
+package com.example.diplom.M
 
 //import io.github.jan.supabase.storage.storage
 //import io.github.jan.supabase.storage.upload
@@ -38,6 +38,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.example.diplom.R
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -184,7 +185,6 @@ fun Profile() {
     }
 }
 
-@OptIn(InternalAPI::class)
 @Composable
 fun Pfp() {
     val context = LocalContext.current
@@ -215,29 +215,6 @@ fun Pfp() {
                 fileName.value = getFileName(context, it)
 
                 val inputStream = context.contentResolver.openInputStream(uri)
-                val fileBytes = inputStream?.use { it.readBytes() }
-
-                var ignat = ImageObject(
-                    uri = fileBytes!!,
-                    mimeType = mimeType.value,
-                    fileName = fileName.value
-                )
-                if (base64Image.value != null && mimeType.value != null && fileName.value != null) {
-                    // Используем CoroutineScope для вызова suspend-функции
-                    CoroutineScope(Dispatchers.IO).launch {
-
-                        Response(ignat.uri!!, ignat.mimeType!!, ignat.fileName!!)
-
-                        Log.d("myLog", "uri.value:${ignat.uri}")
-                        Log.d("myLog", "mimeType.value:${ignat.mimeType}")
-                        Log.d("myLog", "fileName.value:${ignat.fileName}")
-
-                        Log.d("myLog", "uri:${uri}")
-
-
-                    }
-                }
-
             }
         }
     Column(

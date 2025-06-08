@@ -1,8 +1,4 @@
 package com.example.diplom
-
-// Основной импорт для Firestore
-
-// Импорт для работы с документами
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -24,26 +20,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.diplom.M.AddressScreen
+import com.example.diplom.M.ChatScreen
+import com.example.diplom.M.Profile
+import com.example.diplom.M.TrainingScreen
+import com.example.diplom.VM.AuthScreen
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.database.database
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.mapview.MapView
-
-//import io.github.jan.supabase.createSupabaseClient
-//import io.github.jan.supabase.postgrest.Postgrest
-
-
-//val supabase = createSupabaseClient(
-//    supabaseUrl = "https://pzbqhunebwbqivfqojom.supabase.co",
-//    supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6YnFodW5lYndicWl2ZnFvam9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2NTI2MjcsImV4cCI6MjA0ODIyODYyN30.jzstnGKtXgNtGJuAYzT5BrKm1CI7qTlo-wSABzNEZlw"
-//) {
-//    install(Postgrest)
-//}
-
 
 class MainActivity : ComponentActivity() {
     lateinit var mapView: MapView
@@ -56,8 +43,9 @@ class MainActivity : ComponentActivity() {
         mapView = MapView(this)
         Firebase.database.setPersistenceEnabled(true)
         setContent{
-//            TrainingScreen()
+
             MyApp(auth, mapView)
+//            TrainingScreen()
 //            MyImageScreen()
 //            Training()
 //            Profile()
@@ -101,7 +89,7 @@ fun MainScreen(auth: FirebaseAuth) {
                     "Profile" -> {
                         Profile()
                     }
-                    "Adress"->{
+                    "Address"->{
                         AddressScreen()
                     }
                 }
@@ -130,8 +118,8 @@ fun MainScreen(auth: FirebaseAuth) {
                 )
                 Image(
                     painter = painterResource(id = R.drawable.user),
-                    modifier = Modifier.clickable { route = "Adress" },
-                    contentDescription = "Adress"
+                    modifier = Modifier.clickable { route = "Address" },
+                    contentDescription = "Address"
                 )
             }
         }

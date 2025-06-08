@@ -1,4 +1,4 @@
-package com.example.diplom
+package com.example.diplom.M
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.*
@@ -14,6 +14,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.diplom.VM.AddressVM
+import com.example.diplom.DATA.AddressData
 
 @OptIn(
     ExperimentalMaterial3Api::class
@@ -65,8 +67,6 @@ fun AddressScreen(
         }
     }
 }
-
-
 
 @Composable
 private fun LoadingView() {
@@ -146,7 +146,6 @@ private fun AddressList(
     }
 }
 
-
 @Composable
 private fun ExerciseCard(
     exercise: AddressData,
@@ -165,9 +164,6 @@ private fun ExerciseCard(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-
-
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Column(
@@ -190,8 +186,6 @@ private fun ExerciseCard(
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
-
-
                 }
             }
 
@@ -203,10 +197,7 @@ private fun ExerciseCard(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-
             Spacer(modifier = Modifier.height(12.dp))
-
-
         }
     }
 }

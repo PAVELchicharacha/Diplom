@@ -1,4 +1,4 @@
-package com.example.diplom
+package com.example.diplom.DATA
 
 import com.google.firebase.database.IgnoreExtraProperties
 

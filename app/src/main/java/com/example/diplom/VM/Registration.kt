@@ -1,7 +1,6 @@
-package com.example.diplom
+package com.example.diplom.VM
 
 import android.util.Log
-import androidx.compose.animation.core.Animation
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.example.diplom.SignIn
+import com.example.diplom.SignUp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.yandex.mapkit.mapview.MapView
