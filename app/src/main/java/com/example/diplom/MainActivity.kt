@@ -101,6 +101,9 @@ fun MainScreen(auth: FirebaseAuth) {
                     "Profile" -> {
                         Profile()
                     }
+                    "Adress"->{
+                        AddressScreen()
+                    }
                 }
             }
             Row(
@@ -125,10 +128,16 @@ fun MainScreen(auth: FirebaseAuth) {
                     modifier = Modifier.clickable { route = "Profile" },
                     contentDescription = "Profile"
                 )
+                Image(
+                    painter = painterResource(id = R.drawable.user),
+                    modifier = Modifier.clickable { route = "Adress" },
+                    contentDescription = "Adress"
+                )
             }
         }
     }
 }
+
 //выход из аккаунта
 fun SignOut(auth: FirebaseAuth) {
     auth.signOut()
