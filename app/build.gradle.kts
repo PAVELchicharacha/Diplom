@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services)
     kotlin("plugin.serialization") version "2.0.20"
 
+
 //    id("com.google.dagger.hilt.android")
 //    id("kotlin-kapt")
 //    id("com.google.dagger.hilt.android")
@@ -72,6 +73,8 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+
+
 
     // Основная библиотека Ktor Client
     implementation("io.ktor:ktor-client-core:2.3.5") // Основная библиотека Ktor

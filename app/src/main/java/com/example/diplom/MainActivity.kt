@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.diplom.M.AddressScreen
-import com.example.diplom.M.ChatScreen
 import com.example.diplom.M.Profile
 import com.example.diplom.M.TrainingScreen
+import com.example.diplom.V.ShitChatScreen
 import com.example.diplom.VM.AuthScreen
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -83,7 +83,7 @@ fun MainScreen(auth: FirebaseAuth) {
                     }
 
                     "Chat" -> {
-                        ChatScreen()
+                        ShitChatScreen()
                     }
 
                     "Profile" -> {
@@ -117,7 +117,7 @@ fun MainScreen(auth: FirebaseAuth) {
                     contentDescription = "Profile"
                 )
                 Image(
-                    painter = painterResource(id = R.drawable.user),
+                    painter = painterResource(id = R.drawable.ping),
                     modifier = Modifier.clickable { route = "Address" },
                     contentDescription = "Address"
                 )
