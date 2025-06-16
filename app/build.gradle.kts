@@ -95,6 +95,9 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
+    androidTestImplementation ("androidx.compose.ui:ui-test-junit4")
+    debugImplementation ("androidx.compose.ui:ui-test-manifest")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 
     implementation("androidx.activity:activity-compose:1.7.2") // Compose Activity
     implementation("androidx.compose.ui:ui:1.5.1") // Compose UI

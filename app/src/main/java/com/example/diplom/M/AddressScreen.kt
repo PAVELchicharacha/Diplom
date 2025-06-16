@@ -1,4 +1,5 @@
 package com.example.diplom.M
+
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.*
@@ -56,13 +57,13 @@ fun AddressScreen(
         ) {
             when (val state = uiState) {
                 is AddressVM.PlaceUiState.Loading -> LoadingView()
-                is AddressVM.PlaceUiState.Success -> AddressList (
+                is AddressVM.PlaceUiState.Success -> AddressList(
                     exercises = state.exercises,
                     onExerciseClick = onAddressClick
                 )
 
                 is AddressVM.PlaceUiState.Error -> ErrorView(message = state.message)
-                AddressVM.PlaceUiState.Empty -> EmptyView()
+                is AddressVM.PlaceUiState.Empty -> ErrorView(message = "что то пошло не так")
             }
         }
     }
@@ -104,31 +105,6 @@ private fun ErrorView(message: String) {
     }
 }
 
-@Composable
-private fun EmptyView() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.AccountBox,
-                contentDescription = "Нет данных",
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Упражнения не найдены",
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                fontSize = 18.sp
-            )
-        }
-    }
-}
 
 @Composable
 private fun AddressList(
@@ -201,8 +177,3 @@ private fun ExerciseCard(
         }
     }
 }
-
-
-
-
-

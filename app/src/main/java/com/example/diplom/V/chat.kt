@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ShitChatScreen() {
-    var messages by remember { mutableStateOf<List<ShitMessage>>(emptyList()) }
+    var messages by remember { mutableStateOf<List<Message>>(emptyList()) }
     var inputText by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
 
@@ -53,7 +53,7 @@ fun ShitChatScreen() {
             reverseLayout = true
         ) {
             items(messages.reversed()) { msg ->
-                ShitMessageBubble(msg)
+                MessageBubble(msg)
             }
         }
 
@@ -73,7 +73,7 @@ fun ShitChatScreen() {
                 keyboardActions = KeyboardActions(
                     onSend = {
                         if (inputText.isNotBlank()) {
-                            messages = messages + ShitMessage(
+                            messages = messages + Message(
                                 text = inputText,
                                 isMe = true,
                                 time = System.currentTimeMillis()
@@ -89,7 +89,7 @@ fun ShitChatScreen() {
             IconButton(
                 onClick = {
                     if (inputText.isNotBlank()) {
-                        messages = messages + ShitMessage(
+                        messages = messages + Message(
                             text = inputText,
                             isMe = true,
                             time = System.currentTimeMillis()
@@ -111,7 +111,7 @@ fun ShitChatScreen() {
 }
 
 @Composable
-fun ShitMessageBubble(message: ShitMessage) {
+fun MessageBubble(message: Message) {
     val bubbleColor = if (message.isMe) Color(0xFFBB86FC) else Color(0xFF03DAC6)
     val textColor = if (message.isMe) Color.Black else Color.Black
 
@@ -134,7 +134,7 @@ fun ShitMessageBubble(message: ShitMessage) {
     }
 }
 
-data class ShitMessage(
+data class Message(
     val text: String,
     val isMe: Boolean,
     val time: Long

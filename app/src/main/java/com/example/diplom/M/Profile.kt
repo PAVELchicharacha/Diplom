@@ -1,7 +1,4 @@
 package com.example.diplom.M
-
-//import io.github.jan.supabase.storage.storage
-//import io.github.jan.supabase.storage.upload
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -65,16 +62,15 @@ suspend fun getLinkFromResponse(response: HttpResponse): String? {
         val dataObject = jsonObject.getJSONObject("data")
         dataObject.getString("link")
     } catch (e: Exception) {
-        Log.e("my log", "Error parsing response: ${e.message}")
         null
     }
 }
 fun uriToBase64(context: Context, uri: Uri): String? {
     return try {
-        // 1. Получаем InputStream из URI
+
         val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
         inputStream?.use { stream ->
-            // 2. Читаем данные из InputStream в массив байтов
+
             val byteArrayOutputStream = ByteArrayOutputStream()
             val buffer = ByteArray(1024)
             var length: Int
@@ -83,7 +79,6 @@ fun uriToBase64(context: Context, uri: Uri): String? {
             }
             val byteArray = byteArrayOutputStream.toByteArray()
 
-            // 3. Кодируем массив байтов в Base64
             Base64.encodeToString(byteArray, Base64.DEFAULT)
         }
     } catch (e: Exception) {
@@ -145,8 +140,7 @@ fun Profile() {
     }
 
     var name by rememberSaveable { mutableStateOf("your name") }
-    var username by rememberSaveable { mutableStateOf("your name") }
-    var bio by rememberSaveable { mutableStateOf("your name") }
+    var username by rememberSaveable { mutableStateOf("your tag") }
 
 
     Column(

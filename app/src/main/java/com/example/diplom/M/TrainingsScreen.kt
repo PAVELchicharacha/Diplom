@@ -40,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -47,6 +48,18 @@ import coil.compose.AsyncImage
 import com.example.diplom.DATA.Data
 import com.example.diplom.VM.ExerciseViewModel
 
+@Composable
+fun ExerciseItem(exercise: Data) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .testTag("ExerciseItem") // ⭐ Вот здесь добавляется тег для тестов
+    ) {
+        Text(text = exercise.name, style = MaterialTheme.typography.bodySmall)
+        Text(text = exercise.difficulty, style = MaterialTheme.typography.bodyMedium)
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TrainingScreen(

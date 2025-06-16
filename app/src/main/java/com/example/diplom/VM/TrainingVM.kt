@@ -87,4 +87,6 @@ class ExerciseViewModel : ViewModel() {
     fun refreshData() {
         loadExercises()
     }
+
+
 }
