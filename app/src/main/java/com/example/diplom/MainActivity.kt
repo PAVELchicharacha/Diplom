@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.diplom.M.AddressScreen
 import com.example.diplom.M.Profile
+import com.example.diplom.M.ProfileScreen
 import com.example.diplom.M.TrainingScreen
 import com.example.diplom.V.ShitChatScreen
 import com.example.diplom.VM.AuthScreen
@@ -43,7 +44,7 @@ class MainActivity : ComponentActivity() {
         mapView = MapView(this)
         Firebase.database.setPersistenceEnabled(true)
         setContent{
-
+//            ProfileScreen()
             MyApp(auth, mapView)
 //            TrainingScreen()
 //            MyImageScreen()
@@ -87,7 +88,7 @@ fun MainScreen(auth: FirebaseAuth) {
                     }
 
                     "Profile" -> {
-                        Profile()
+                        ProfileScreen()
                     }
                     "Address"->{
                         AddressScreen()
