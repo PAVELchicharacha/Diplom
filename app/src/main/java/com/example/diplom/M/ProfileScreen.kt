@@ -15,13 +15,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.diplom.VM.ProfileViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun ProfileScreen(
+    viewModel: ProfileViewModel = viewModel()
+) {
+    val context = LocalContext.current
+    var showImagePicker by remember { mutableStateOf(false) }
+
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -31,7 +40,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = androidx.lifecycle.viewmodel.com
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Мой профиль") },
+                title = { Text("Профиль") },
                 actions = {
                     IconButton(onClick = { viewModel.updateProfile() }) {
                         Icon(Icons.Default.Check, contentDescription = "Сохранить")
@@ -47,8 +56,10 @@ fun ProfileScreen(viewModel: ProfileViewModel = androidx.lifecycle.viewmodel.com
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Аватарка профиля
-            Box(contentAlignment = Alignment.BottomEnd) {
+            // Аватар профиля
+            Box(
+                contentAlignment = Alignment.BottomEnd
+            ) {
                 if (viewModel.profileImageUrl.value.isNotEmpty()) {
                     Image(
                         painter = rememberAsyncImagePainter(viewModel.profileImageUrl.value),
@@ -72,6 +83,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = androidx.lifecycle.viewmodel.com
                     modifier = Modifier.offset(x = 10.dp, y = 10.dp)
                 ) {
                     Icon(
+
                         imageVector = Icons.Default.Edit,
                         contentDescription = "Изменить фото",
                         modifier = Modifier
@@ -112,8 +124,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = androidx.lifecycle.viewmodel.com
             if (viewModel.errorMessage.value.isNotEmpty()) {
                 Text(
                     text = viewModel.errorMessage.value,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(top = 16.dp)
+                    color = MaterialTheme.colorScheme.error
                 )
             }
         }

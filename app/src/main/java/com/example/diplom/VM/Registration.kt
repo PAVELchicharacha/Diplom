@@ -31,7 +31,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.yandex.mapkit.mapview.MapView
 
-
 @Composable
 fun Map(mapView: MapView) {
     AndroidView(
@@ -41,7 +40,6 @@ fun Map(mapView: MapView) {
             .fillMaxWidth(),
     )
 }
-
 @Composable
 fun AuthScreen(onAuth: () -> Unit, mapView: MapView) {
     val auth = Firebase.auth

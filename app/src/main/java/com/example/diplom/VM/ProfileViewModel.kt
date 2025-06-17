@@ -86,7 +86,7 @@ class ProfileViewModel : ViewModel() {
                 }
             }
             .addOnFailureListener {
-                errorMessage.value = "Ошибка загрузки фото"
+                errorMessage.value = ""
                 isLoading.value = false
             }
     }
