@@ -1,5 +1,7 @@
 package com.example.diplom.M
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,12 +36,14 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -327,7 +331,7 @@ private fun EquipmentChip(equipment: String) {
         label = { Text(equipment) },
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.Call,
+                imageVector = Icons.Default.ShoppingCart,
                 contentDescription = null,
                 modifier = Modifier.size(AssistChipDefaults.IconSize)
             )
@@ -337,9 +341,12 @@ private fun EquipmentChip(equipment: String) {
 
 @Composable
 private fun ExerciseStats(exercise: Data) {
+
     Row(
+
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
+
     ) {
         StatItem(
             icon = Icons.Default.Check,
@@ -348,6 +355,7 @@ private fun ExerciseStats(exercise: Data) {
         )
 
         StatItem(
+
             icon = Icons.Default.Check,
             value = "${exercise.caloriesBurned} ккал",
             label = "Калории"
@@ -358,8 +366,10 @@ private fun ExerciseStats(exercise: Data) {
                 icon = Icons.Default.Check,
                 value = "Видео",
                 label = "Демонстрация"
+
             )
         }
+
     }
 }
 
